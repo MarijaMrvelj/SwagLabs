@@ -16,13 +16,12 @@ public class HomePage extends BaseTest {
     public WebElement menuButton;
     @FindBy(id = "inventory_container")
     public WebElement inventoryContainer;
-
-    /*@FindBy(className = "social_twitter")
+    @FindBy(className = "social_twitter")
     public WebElement twitterLogo;
     @FindBy(className = "social_facebook")
     public WebElement facebookLogo;
     @FindBy(className = "social_linkedin")
-    public WebElement linkedInLogo;*/
+    public WebElement linkedInLogo;
     @FindBy(id = "shopping_cart_container")
     public WebElement cart;
     @FindBy(className = "shopping_cart_badge")
@@ -43,7 +42,7 @@ public class HomePage extends BaseTest {
         menuButton.click();
     }
 
-    /*public void clickOnTwitterLogo() {
+    public void clickOnTwitterLogo() {
         twitterLogo.click();
     }
     public void clickOnFacebookLogo() {
@@ -51,7 +50,7 @@ public class HomePage extends BaseTest {
     }
     public void clickOnLinkedInLogo() {
         linkedInLogo.click();
-    }*/
+    }
     public void clickOnCart() {
         cart.click();
     }

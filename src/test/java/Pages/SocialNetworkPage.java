@@ -10,10 +10,18 @@ public class SocialNetworkPage extends BaseTest {
     public SocialNetworkPage() {
         PageFactory.initElements(driver, this);
     }
-    @FindBy(css = "#react-root > div > div > div.css-1dbjc4n.r-18u37iz.r-13qz1uu.r-417010 > main > div > div > div > div > div > div:nth-child(3) > div > div > div > div > div.css-1dbjc4n.r-6gpygo.r-14gqq1x > div.css-1dbjc4n.r-1wbh5a2.r-dnmrzs.r-1ny4l3l > div > div.css-1dbjc4n.r-1wbh5a2.r-dnmrzs.r-1ny4l3l > div > div > span > span:nth-child(1)")
+    @FindBy(css = "h2[role='heading']")
     public WebElement twitterPage;
     @FindBy(css = ".x1egiwwb.x4l50q0")
     public WebElement facebookWindow;
+    @FindBy(css = "h1")
+    public WebElement facebookPage;
+    @FindBy(id = "organization_guest_contextual-sign-in-modal-header")
+    public WebElement linkedInWindow;
+    @FindBy(id = "main-content")
+    public WebElement linkedInPage;
+    @FindBy(css = "h1")
+    public WebElement linkedInProfile;
 
     //------------------------
 
