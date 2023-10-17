@@ -20,7 +20,46 @@ public class LoginTest extends BaseTest {
         Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
         Assert.assertFalse(isElementDisplayed(loginPage.loginButton));
     }
+    @Test
+    public void verifyThatProblemUserCanLogIn() {
+        logIn("problem_user");
 
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.homePageUrl());
+        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
+        Assert.assertFalse(isElementDisplayed(loginPage.loginButton));
+    }
+    @Test
+    public void verifyThatLockedOutUserCanLogIn() {
+        logIn("locked_out_user");
+
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.homePageUrl());
+        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
+        Assert.assertFalse(isElementDisplayed(loginPage.loginButton));
+    }
+    @Test
+    public void verifyThatPerformanceGlitchUserCanLogIn() {
+        logIn("performance_glitch_user");
+
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.homePageUrl());
+        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
+        Assert.assertFalse(isElementDisplayed(loginPage.loginButton));
+    }
+    @Test
+    public void verifyThatErrorUserCanLogIn() {
+        logIn("error_user");
+
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.homePageUrl());
+        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
+        Assert.assertFalse(isElementDisplayed(loginPage.loginButton));
+    }
+    @Test
+    public void verifyThatVisualUserCanLogIn() {
+        logIn("visual_user");
+
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.homePageUrl());
+        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
+        Assert.assertFalse(isElementDisplayed(loginPage.loginButton));
+    }
     @Test
     public void verifyThatUserCanLogOut() {
         logInForStandardUser();

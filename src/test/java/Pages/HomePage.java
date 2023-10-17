@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomePage extends BaseTest {
@@ -33,6 +34,9 @@ public class HomePage extends BaseTest {
     public List<WebElement> addToCartButtons;
     @FindBy(css = ".btn.btn_secondary.btn_small.btn_inventory")
     public List<WebElement> removeButtons;
+    //@FindBy(className = "inventory_item_price")
+    @FindBy(className = "inventory_item_price")
+    public List<WebElement> prices;
 
     //------------------------
     public String homePageUrl() {
@@ -57,7 +61,6 @@ public class HomePage extends BaseTest {
     public void clickOnItemName(String itemName) {
         for (int i = 0; i < itemNames.size(); i++) {
             if(itemNames.get(i).getText().equals(itemName)) {
-                //scroll(itemNames.get(i));
                 itemNames.get(i).click();
             }
         }
@@ -75,4 +78,15 @@ public class HomePage extends BaseTest {
         driver.findElement(By.id(getRemoveButtonIdName(itemName))).click();
     }
 
+    public ArrayList<Double> allPrices() {
+        ArrayList<Double> pricesList = new ArrayList<>();
+        for (WebElement itemPrice : prices) {
+            double price = Double.parseDouble(itemPrice.getText().replace("$", ""));
+            pricesList.add(price);
+        }
+        return pricesList;
+    }
+    public boolean isSortedLowToHigh() {
+        return true;
+    }
 }

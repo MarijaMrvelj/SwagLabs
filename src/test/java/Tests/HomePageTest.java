@@ -53,6 +53,7 @@ public class HomePageTest extends BaseTest {
 
         Assert.assertTrue(sidebarMenuPage.aboutPage.isDisplayed());
         Assert.assertFalse(isElementDisplayed(homePage.inventoryContainer));
+        Assert.assertEquals(driver.getTitle(), "Sauce Labs: Cross Browser Testing, Selenium Testing & Mobile Testing");
     }
     @Test
     public void allItemsCanBeDisplayedFromSidebarMenu() {
@@ -74,5 +75,9 @@ public class HomePageTest extends BaseTest {
 
         Assert.assertTrue(homePage.removeButtons.isEmpty());
         Assert.assertFalse(isElementDisplayed(homePage.cartValue));
+    }
+    @Test
+    public void sortPrice() {
+        System.out.println(homePage.allPrices());
     }
 }
