@@ -1,11 +1,14 @@
 package Tests;
 
 import Base.BaseTest;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class HomePageTest extends BaseTest {
 
@@ -77,7 +80,42 @@ public class HomePageTest extends BaseTest {
         Assert.assertFalse(isElementDisplayed(homePage.cartValue));
     }
     @Test
-    public void sortPrice() {
+    public void pricesCanBeSortedLowToHigh() {
         System.out.println(homePage.allPrices());
+        Select objSelect = new Select(homePage.sortDropdown);
+        objSelect.selectByVisibleText("Price (low to high)");
+        System.out.println(homePage.allPrices());
+
+        Assert.assertTrue(homePage.isSortedLowToHigh(homePage.allPrices()));
+    }
+    @Test
+    public void pricesCanBeSortedHighToLow() {
+        System.out.println(homePage.allPrices());
+        Select objSelect = new Select(homePage.sortDropdown);
+        objSelect.selectByVisibleText("Price (high to low)");
+        System.out.println(homePage.allPrices());
+
+        Assert.assertTrue(homePage.isSortedHighToLow(homePage.allPrices()));
+    }
+    @Test
+    public void itemsCanBeSortedByNameZToA() {
+        System.out.println(homePage.allItemsNames());
+        Select objSelect = new Select(homePage.sortDropdown);
+        objSelect.selectByVisibleText("Name (Z to A)");
+        System.out.println(homePage.allItemsNames());
+
+        Assert.assertEquals(homePage.allItemsNames(), homePage.sortItemsNamesInReverseOrder());
+    }
+    @Test
+    public void itemsCanBeSortedByNameAToZ() {
+        System.out.println(homePage.allItemsNames());
+        Select objSelect = new Select(homePage.sortDropdown);
+        objSelect.selectByVisibleText("Name (Z to A)");
+        System.out.println(homePage.allItemsNames());
+
+        objSelect.selectByVisibleText("Name (A to Z)");
+        System.out.println(homePage.allItemsNames());
+
+        Assert.assertEquals(homePage.allItemsNames(), homePage.sortItemsNamesInOrder());
     }
 }

@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HomePage extends BaseTest {
@@ -34,9 +36,10 @@ public class HomePage extends BaseTest {
     public List<WebElement> addToCartButtons;
     @FindBy(css = ".btn.btn_secondary.btn_small.btn_inventory")
     public List<WebElement> removeButtons;
-    //@FindBy(className = "inventory_item_price")
     @FindBy(className = "inventory_item_price")
     public List<WebElement> prices;
+    @FindBy(className = "product_sort_container")
+    public WebElement sortDropdown;
 
     //------------------------
     public String homePageUrl() {
@@ -86,7 +89,35 @@ public class HomePage extends BaseTest {
         }
         return pricesList;
     }
-    public boolean isSortedLowToHigh() {
+    public boolean isSortedLowToHigh(ArrayList<Double> doubleList) {
+        for (int i = 0; i < doubleList.size()-1; i++) {
+            if(doubleList.get(i) > doubleList.get(i + 1))
+                return false;
+        }
         return true;
+    }
+    public boolean isSortedHighToLow(ArrayList<Double> doubleList) {
+        for (int i = 0; i < doubleList.size()-1; i++) {
+            if(doubleList.get(i) < doubleList.get(i + 1))
+                return false;
+        }
+        return true;
+    }
+    public ArrayList<String> allItemsNames() {
+        ArrayList<String> itemsList = new ArrayList<>();
+        for (WebElement item : itemNames) {
+            itemsList.add(item.getText());
+        }
+        return itemsList;
+    }
+    public ArrayList<String> sortItemsNamesInReverseOrder() {
+        ArrayList<String> itemsList = new ArrayList<>(allItemsNames());
+        itemsList.sort(Collections.reverseOrder());
+        return itemsList;
+    }
+    public ArrayList<String> sortItemsNamesInOrder() {
+        ArrayList<String> itemsList = new ArrayList<>(allItemsNames());
+        itemsList.sort(Comparator.naturalOrder());
+        return itemsList;
     }
 }
