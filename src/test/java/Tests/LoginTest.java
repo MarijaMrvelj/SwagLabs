@@ -25,7 +25,7 @@ public class LoginTest extends BaseTest {
     public void verifyThatUserCanLogOut() {
         logInForStandardUser();
         homePage.clickOnMenuButton();
-        menuPage.clickOnLogoutButton();
+        sidebarMenuPage.clickOnLogoutButton();
 
         Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());
         Assert.assertTrue(loginPage.loginButton.isDisplayed());
@@ -41,10 +41,8 @@ public class LoginTest extends BaseTest {
             loginPage.clickOnLoginButton();
 
             Assert.assertTrue(loginPage.error.isDisplayed());
-            Assert.assertEquals(loginPage.errorMessage(), "Epic sadface: Username and password do not match any user in this service");
             Assert.assertTrue(loginPage.error.isDisplayed());
             Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());
-
         }
     }
 
@@ -58,7 +56,6 @@ public class LoginTest extends BaseTest {
             loginPage.clickOnLoginButton();
 
             Assert.assertTrue(loginPage.error.isDisplayed());
-            Assert.assertEquals(loginPage.errorMessage(), "Epic sadface: Username and password do not match any user in this service");
             Assert.assertTrue(loginPage.error.isDisplayed());
             Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());
         }

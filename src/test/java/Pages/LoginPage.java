@@ -37,7 +37,4 @@ public class LoginPage extends BaseTest {
         return "https://www.saucedemo.com/";
     }
 
-    public String errorMessage() {
-        return error.getText();
-    }
 }

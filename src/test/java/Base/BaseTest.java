@@ -23,7 +23,7 @@ public class BaseTest {
     public HomePage homePage;
     public SocialNetworkPage socialNetworkPage;
     public YourCartPage yourCartPage;
-    public MenuPage menuPage;
+    public SidebarMenuPage sidebarMenuPage;
     public ItemPage itemPage;
 
     @BeforeClass
@@ -31,14 +31,14 @@ public class BaseTest {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        //wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         loginPage = new LoginPage();
         excelReader = new ExcelReader("src/test/java/TestData.xlsx");
         homePage = new HomePage();
         socialNetworkPage = new SocialNetworkPage();
         yourCartPage = new YourCartPage();
-        menuPage = new MenuPage();
+        sidebarMenuPage = new SidebarMenuPage();
         itemPage = new ItemPage();
     }
 
@@ -61,11 +61,19 @@ public class BaseTest {
     public void isCartEmpty() {
         homePage.clickOnCart();
         Assert.assertFalse(isElementDisplayed(homePage.cartValue));
-        Assert.assertEquals(yourCartPage.cartList.getText(), "QTYDescription");
+        Assert.assertFalse(isElementDisplayed(yourCartPage.cartItem));
         driver.navigate().back();
     }
-    public void scroll(WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+
+    public String getAddToCartButtonIdName(String itemName) {
+        String base = "add-to-cart-";
+        String item = itemName.toLowerCase().replaceAll(" ", "-");
+        return base + item;
+    }
+    public String getRemoveButtonIdName(String itemName) {
+        String base = "remove-";
+        String item = itemName.toLowerCase().replaceAll(" ", "-");
+        return base + item;
     }
 
     @AfterClass

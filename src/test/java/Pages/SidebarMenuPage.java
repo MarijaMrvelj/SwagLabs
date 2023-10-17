@@ -5,9 +5,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class MenuPage extends BaseTest {
+public class SidebarMenuPage extends BaseTest {
 
-    public MenuPage() {
+    public SidebarMenuPage() {
         PageFactory.initElements(driver, this);
     }
 

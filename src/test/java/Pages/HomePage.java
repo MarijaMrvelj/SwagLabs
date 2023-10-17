@@ -1,6 +1,7 @@
 package Pages;
 
 import Base.BaseTest;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -28,11 +29,10 @@ public class HomePage extends BaseTest {
     public WebElement cartValue;
     @FindBy(css = "div.inventory_item_name")
     public List<WebElement> itemNames;
-    @FindBy(id = "add-to-cart-sauce-labs-backpack")
-    public WebElement addToCartBackpackButton;
-    @FindBy(id = "remove-sauce-labs-backpack")
-    public WebElement removeBackpackButton;
-
+    @FindBy(css = ".btn.btn_primary.btn_small.btn_inventory")
+    public List<WebElement> addToCartButtons;
+    @FindBy(css = ".btn.btn_secondary.btn_small.btn_inventory")
+    public List<WebElement> removeButtons;
 
     //------------------------
     public String homePageUrl() {
@@ -62,11 +62,17 @@ public class HomePage extends BaseTest {
             }
         }
     }
-    public void clickOnAddToCartBackpackButton() {
-        addToCartBackpackButton.click();
+    /*public void clickOnAddToCartButton(int index) {
+        addToCartButtons.get(index).click();
     }
-    public void clickOnRemoveBackpackButton() {
-        removeBackpackButton.click();
+    public void clickOnRemoveButton(int index) {
+        removeButtons.get(index).click();
+    }*/
+    public void clickOnAddToCartButton(String itemName) {
+        driver.findElement(By.id(getAddToCartButtonIdName(itemName))).click();
+    }
+    public void clickOnRemoveButton(String itemName) {
+        driver.findElement(By.id(getRemoveButtonIdName(itemName))).click();
     }
 
 }

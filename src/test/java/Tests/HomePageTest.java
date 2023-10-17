@@ -49,9 +49,30 @@ public class HomePageTest extends BaseTest {
     @Test
     public void aboutPageCanBeOpened() {
         homePage.clickOnMenuButton();
-        menuPage.clickOnAboutButton();
+        sidebarMenuPage.clickOnAboutButton();
 
-        Assert.assertTrue(menuPage.aboutPage.isDisplayed());
+        Assert.assertTrue(sidebarMenuPage.aboutPage.isDisplayed());
         Assert.assertFalse(isElementDisplayed(homePage.inventoryContainer));
+    }
+    @Test
+    public void allItemsCanBeDisplayedFromSidebarMenu() {
+        homePage.clickOnCart();
+        homePage.clickOnMenuButton();
+        sidebarMenuPage.clickOnAllItemsButton();
+
+        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.homePageUrl());
+    }
+    @Test
+    public void appStateCanBeReset() {
+        isCartEmpty();
+        homePage.clickOnAddToCartButton("Sauce Labs Onesie");
+        homePage.clickOnAddToCartButton("Sauce Labs Fleece Jacket");
+        homePage.clickOnMenuButton();
+        sidebarMenuPage.clickOnResetAppStateButton();
+        driver.navigate().refresh();
+
+        Assert.assertTrue(homePage.removeButtons.isEmpty());
+        Assert.assertFalse(isElementDisplayed(homePage.cartValue));
     }
 }
