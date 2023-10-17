@@ -1,0 +1,31 @@
+@Test
+    public void verifyThatTwitterLogoIsClickable() throws InterruptedException {
+        logInForStandardUser();
+        homePage.clickOnTwitterLogo();
+        ArrayList<String> tabList = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabList.get(1));
+
+        Assert.assertEquals(driver.getCurrentUrl(), socialNetworkPage.twitterPageUrl());
+        Assert.assertEquals(socialNetworkPage.twitterPage.getText(), "Sauce Labs");
+    }
+
+    @Test
+    public void verifyThatFacebookLogoIsClickable() {
+        logInForStandardUser();
+        homePage.clickOnFacebookLogo();
+        ArrayList<String> tabList = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabList.get(1));
+
+        Assert.assertEquals(driver.getCurrentUrl(), socialNetworkPage.facebookPageUrl());
+        Assert.assertTrue(socialNetworkPage.facebookWindow.isDisplayed());
+    }
+
+    @Test
+    public void verifyThatLinkedInLogoIsClickable() {
+        logInForStandardUser();
+        homePage.clickOnLinkedInLogo();
+        ArrayList<String> tabList = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabList.get(1));
+
+        Assert.assertEquals(driver.getCurrentUrl(), socialNetworkPage.linkedInPageUrl());
+    }
