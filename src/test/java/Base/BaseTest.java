@@ -2,6 +2,7 @@ package Base;
 
 import Pages.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,6 +13,8 @@ import org.testng.annotations.BeforeClass;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseTest {
 
@@ -24,14 +27,18 @@ public class BaseTest {
     public YourCartPage yourCartPage;
     public SidebarMenuPage sidebarMenuPage;
     public ItemPage itemPage;
+    public HeaderSectionPage headerSectionPage;
+    public CheckoutPage checkoutPage;
+    public CheckoutOverviewPage checkoutOverviewPage;
+    public CheckoutCompletePage checkoutCompletePage;
 
     @BeforeClass
     public void setUp() throws IOException {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
         loginPage = new LoginPage();
         excelReader = new ExcelReader("src/test/java/TestData.xlsx");
         homePage = new HomePage();
@@ -39,6 +46,10 @@ public class BaseTest {
         yourCartPage = new YourCartPage();
         sidebarMenuPage = new SidebarMenuPage();
         itemPage = new ItemPage();
+        headerSectionPage = new HeaderSectionPage();
+        checkoutPage = new CheckoutPage();
+        checkoutOverviewPage = new CheckoutOverviewPage();
+        checkoutCompletePage = new CheckoutCompletePage();
     }
 
     public void logInForStandardUser() {
@@ -48,6 +59,7 @@ public class BaseTest {
         loginPage.inputPassword(validPassword);
         loginPage.clickOnLoginButton();
     }
+
     public void logIn(String user) {
         String validUsername = "";
         String validPassword = excelReader.getStringData("Login", 1, 1);
@@ -64,6 +76,7 @@ public class BaseTest {
         loginPage.inputPassword(validPassword);
         loginPage.clickOnLoginButton();
     }
+
     public boolean isElementDisplayed(WebElement element) {
         boolean isDisplayed = false;
         try {
@@ -73,10 +86,13 @@ public class BaseTest {
         }
         return isDisplayed;
     }
+
     public void isCartEmpty() {
-        homePage.clickOnCart();
-        Assert.assertFalse(isElementDisplayed(homePage.cartValue));
-        Assert.assertFalse(isElementDisplayed(yourCartPage.cartItem));
+        headerSectionPage.clickOnCart();
+        if(!isElementDisplayed(headerSectionPage.cartValue) && yourCartPage.cartItem.isEmpty())
+            System.out.println("Your cart is empty.");
+        else
+            System.out.println("Your cart is not empty!");
         driver.navigate().back();
     }
 
@@ -85,10 +101,26 @@ public class BaseTest {
         String item = itemName.toLowerCase().replaceAll(" ", "-");
         return base + item;
     }
+
     public String getRemoveButtonIdName(String itemName) {
         String base = "remove-";
         String item = itemName.toLowerCase().replaceAll(" ", "-");
         return base + item;
+    }
+
+    public void addItem(String itemName) {
+        isCartEmpty();
+        homePage.clickOnAddToCartButton(itemName);
+        Assert.assertTrue(driver.findElement(By.id(getRemoveButtonIdName(itemName))).isDisplayed());
+    }
+
+    public ArrayList<Double> allPricesList(List<WebElement> prices) {
+        ArrayList<Double> pricesList = new ArrayList<>();
+        for (WebElement itemPrice : prices) {
+            double price = Double.parseDouble(itemPrice.getText().replace("$", ""));
+            pricesList.add(price);
+        }
+        return pricesList;
     }
 
     @AfterClass

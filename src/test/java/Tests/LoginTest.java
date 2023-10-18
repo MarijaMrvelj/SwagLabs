@@ -63,7 +63,7 @@ public class LoginTest extends BaseTest {
     @Test
     public void verifyThatUserCanLogOut() {
         logInForStandardUser();
-        homePage.clickOnMenuButton();
+        headerSectionPage.clickOnMenuButton();
         sidebarMenuPage.clickOnLogoutButton();
 
         Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());

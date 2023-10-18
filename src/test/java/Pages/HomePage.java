@@ -16,8 +16,6 @@ public class HomePage extends BaseTest {
     public HomePage() {
         PageFactory.initElements(driver, this);
     }
-    @FindBy(id = "react-burger-menu-btn")
-    public WebElement menuButton;
     @FindBy(id = "inventory_container")
     public WebElement inventoryContainer;
     @FindBy(className = "social_twitter")
@@ -26,10 +24,6 @@ public class HomePage extends BaseTest {
     public WebElement facebookLogo;
     @FindBy(className = "social_linkedin")
     public WebElement linkedInLogo;
-    @FindBy(id = "shopping_cart_container")
-    public WebElement cart;
-    @FindBy(className = "shopping_cart_badge")
-    public WebElement cartValue;
     @FindBy(css = "div.inventory_item_name")
     public List<WebElement> itemNames;
     @FindBy(css = ".btn.btn_primary.btn_small.btn_inventory")
@@ -38,6 +32,10 @@ public class HomePage extends BaseTest {
     public List<WebElement> removeButtons;
     @FindBy(className = "inventory_item_price")
     public List<WebElement> prices;
+    @FindBy(className = "inventory_item_desc")
+    public List<WebElement> itemsDescriptions;
+    @FindBy(css = "div.inventory_item_img > a > img.inventory_item_img[alt]")
+    public List<WebElement> itemsImages;
     @FindBy(className = "product_sort_container")
     public WebElement sortDropdown;
 
@@ -45,10 +43,6 @@ public class HomePage extends BaseTest {
     public String homePageUrl() {
         return "https://www.saucedemo.com/inventory.html";
     }
-    public void clickOnMenuButton() {
-        menuButton.click();
-    }
-
     public void clickOnTwitterLogo() {
         twitterLogo.click();
     }
@@ -58,9 +52,7 @@ public class HomePage extends BaseTest {
     public void clickOnLinkedInLogo() {
         linkedInLogo.click();
     }
-    public void clickOnCart() {
-        cart.click();
-    }
+
     public void clickOnItemName(String itemName) {
         for (int i = 0; i < itemNames.size(); i++) {
             if(itemNames.get(i).getText().equals(itemName)) {
@@ -79,15 +71,6 @@ public class HomePage extends BaseTest {
     }
     public void clickOnRemoveButton(String itemName) {
         driver.findElement(By.id(getRemoveButtonIdName(itemName))).click();
-    }
-
-    public ArrayList<Double> allPrices() {
-        ArrayList<Double> pricesList = new ArrayList<>();
-        for (WebElement itemPrice : prices) {
-            double price = Double.parseDouble(itemPrice.getText().replace("$", ""));
-            pricesList.add(price);
-        }
-        return pricesList;
     }
     public boolean isSortedLowToHigh(ArrayList<Double> doubleList) {
         for (int i = 0; i < doubleList.size()-1; i++) {
@@ -119,5 +102,11 @@ public class HomePage extends BaseTest {
         ArrayList<String> itemsList = new ArrayList<>(allItemsNames());
         itemsList.sort(Comparator.naturalOrder());
         return itemsList;
+    }
+    public boolean doPricesHaveSameCurrency() {
+        boolean contains = false;
+        for (WebElement price : prices)
+            contains = price.getText().contains("$");
+        return contains;
     }
 }

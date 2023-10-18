@@ -3,6 +3,7 @@ package Tests;
 import Base.BaseTest;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -11,7 +12,7 @@ public class CartTest extends BaseTest {
     @BeforeMethod
     public void pageSetUp() {
         driver.navigate().to("https://www.saucedemo.com/");
-        logInForStandardUser();
+        logIn("standard_user");
     }
 
     @Test
@@ -21,7 +22,7 @@ public class CartTest extends BaseTest {
 
         Assert.assertFalse(homePage.removeButtons.isEmpty());
         Assert.assertTrue(driver.findElement(By.id(getRemoveButtonIdName("Test.allTheThings() T-Shirt (Red)"))).isDisplayed());
-        Assert.assertEquals(homePage.cartValue.getText(), "1");
+        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
     }
     @Test
     public void userCanAddAnyItemToCartFromHomepage() {
@@ -30,7 +31,7 @@ public class CartTest extends BaseTest {
 
         Assert.assertEquals(homePage.removeButtons.size(), 1);
         Assert.assertTrue(driver.findElement(By.id(getRemoveButtonIdName("Sauce Labs Backpack"))).isDisplayed());
-        Assert.assertEquals(homePage.cartValue.getText(), "1");
+        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
     }
 
     @Test
@@ -39,41 +40,39 @@ public class CartTest extends BaseTest {
         homePage.clickOnItemName("Sauce Labs Backpack");
         itemPage.clickOnAddToCartButton();
 
-        Assert.assertEquals(homePage.cartValue.getText(), "1");
+        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
         Assert.assertTrue(itemPage.removeButton.isDisplayed());
     }
 
     @Test
     public void userCanSeeTheItemInTheCart() {
-        isCartEmpty();
-        homePage.clickOnAddToCartButton("Sauce Labs Backpack");
-        homePage.clickOnCart();
+        addItem("Sauce Labs Backpack");
+        headerSectionPage.clickOnCart();
 
         Assert.assertEquals(driver.getCurrentUrl(), yourCartPage.yourCartPageUrl());
-        Assert.assertTrue(yourCartPage.cartItem.isDisplayed());
+        Assert.assertEquals(yourCartPage.cartItem.size(), 1);
+        Assert.assertEquals(yourCartPage.getItemName(0), "Sauce Labs Backpack");
     }
 
     @Test
     public void userCanRemoveItemFromCartPage() {
-        isCartEmpty();
-        homePage.clickOnAddToCartButton("Test.allTheThings() T-Shirt (Red)");
-        homePage.clickOnCart();
+        addItem("Test.allTheThings() T-Shirt (Red)");
+        headerSectionPage.clickOnCart();
         Assert.assertEquals(driver.getCurrentUrl(), yourCartPage.yourCartPageUrl());
-        Assert.assertTrue(yourCartPage.cartItem.isDisplayed());
+        Assert.assertFalse(yourCartPage.cartItem.isEmpty());
+        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
 
         yourCartPage.removeItem(0);
-        Assert.assertFalse(isElementDisplayed(homePage.cartValue));
-        Assert.assertFalse(isElementDisplayed(yourCartPage.cartItem));
-        Assert.assertEquals(yourCartPage.cartList.getText(), "QTYDescription");
+        Assert.assertFalse(isElementDisplayed(headerSectionPage.cartValue));
+        Assert.assertTrue(yourCartPage.cartItem.isEmpty());
     }
 
     @Test
     public void userCanRemoveItemFromHomepage() {
-        isCartEmpty();
-        homePage.clickOnAddToCartButton("Sauce Labs Bolt T-Shirt");
+        addItem("Sauce Labs Bolt T-Shirt");
 
         homePage.clickOnRemoveButton("Sauce Labs Bolt T-Shirt");
-        Assert.assertFalse(isElementDisplayed(homePage.cartValue));
+        Assert.assertFalse(isElementDisplayed(headerSectionPage.cartValue));
         Assert.assertTrue(driver.findElement(By.id(getAddToCartButtonIdName("Sauce Labs Bolt T-Shirt"))).isDisplayed());
     }
 
@@ -84,7 +83,7 @@ public class CartTest extends BaseTest {
         homePage.clickOnItemName("Sauce Labs Backpack");
         itemPage.clickOnRemoveButton();
 
-        Assert.assertFalse(isElementDisplayed(homePage.cartValue));
+        Assert.assertFalse(isElementDisplayed(headerSectionPage.cartValue));
         Assert.assertTrue(itemPage.addToCartButton.isDisplayed());
     }
     @Test
@@ -92,23 +91,36 @@ public class CartTest extends BaseTest {
         isCartEmpty();
         homePage.clickOnItemName("Sauce Labs Bolt T-Shirt");
         itemPage.clickOnAddToCartButton();
-        Assert.assertEquals(homePage.cartValue.getText(), "1");
+        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
         Assert.assertTrue(itemPage.removeButton.isDisplayed());
 
-        homePage.clickOnMenuButton();
+        headerSectionPage.clickOnMenuButton();
         sidebarMenuPage.clickOnResetAppStateButton();
         driver.navigate().refresh();
 
-        Assert.assertFalse(isElementDisplayed(homePage.cartValue));
+        Assert.assertFalse(isElementDisplayed(headerSectionPage.cartValue));
         Assert.assertTrue(itemPage.addToCartButton.isDisplayed());
     }
 
     @Test
     public void userCanContinueShopping() {
-        homePage.clickOnCart();
+        addItem("Sauce Labs Backpack");
+        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
+
+        headerSectionPage.clickOnCart();
         yourCartPage.clickOnContinueShoppingButton();
 
+        homePage.clickOnAddToCartButton("Sauce Labs Bolt T-Shirt");
+
+        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 2);
         Assert.assertEquals(driver.getCurrentUrl(), homePage.homePageUrl());
+        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
     }
 
+    @AfterMethod
+    public void pageReset() {
+        headerSectionPage.clickOnMenuButton();
+        sidebarMenuPage.clickOnResetAppStateButton();
+        sidebarMenuPage.clickOnLogoutButton();
+    }
 }

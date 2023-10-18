@@ -14,12 +14,10 @@ public class YourCartPage extends BaseTest {
     }
     @FindBy(className = "cart_list")
     public WebElement cartList;
-    @FindBy(className = "cart_quantity")
-    public List<WebElement> quantityOfAnItem;
     @FindBy(className = "inventory_item_name")
     public List<WebElement> itemNames;
     @FindBy(className = "cart_item")
-    public WebElement cartItem;
+    public List<WebElement> cartItem;
     @FindBy(css = ".btn.btn_secondary.btn_small.cart_button")
     public List<WebElement> removeButtons;
     @FindBy(id = "checkout")
@@ -43,6 +41,9 @@ public class YourCartPage extends BaseTest {
             if(itemNames.get(i).getText().equals(itemName))
                 itemNames.get(i).click();
         }
+    }
+    public String getItemName(int index) {
+        return itemNames.get(index).getText();
     }
     public void removeItem(int index) {
         removeButtons.get(index).click();
