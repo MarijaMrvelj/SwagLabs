@@ -26,11 +26,9 @@ public class CartTest extends BaseTest {
     }
     @Test
     public void userCanAddAnyItemToCartFromHomepage() {
-        isCartEmpty();
-        homePage.clickOnAddToCartButton("Sauce Labs Backpack");
+        addRandomItem(homePage.allItemsNames());
 
         Assert.assertEquals(homePage.removeButtons.size(), 1);
-        Assert.assertTrue(driver.findElement(By.id(getRemoveButtonIdName("Sauce Labs Backpack"))).isDisplayed());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
     }
 
@@ -56,7 +54,7 @@ public class CartTest extends BaseTest {
 
     @Test
     public void userCanRemoveItemFromCartPage() {
-        addItem("Test.allTheThings() T-Shirt (Red)");
+        addRandomItem(homePage.allItemsNames());
         headerSectionPage.clickOnCart();
         Assert.assertEquals(driver.getCurrentUrl(), yourCartPage.yourCartPageUrl());
         Assert.assertFalse(yourCartPage.cartItem.isEmpty());
@@ -88,33 +86,30 @@ public class CartTest extends BaseTest {
     }
     @Test
     public void userCanRemoveItemWithResetAppStateButton() {
-        isCartEmpty();
-        homePage.clickOnItemName("Sauce Labs Bolt T-Shirt");
-        itemPage.clickOnAddToCartButton();
+        addRandomItem(homePage.allItemsNames());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
-        Assert.assertTrue(itemPage.removeButton.isDisplayed());
+        Assert.assertFalse(homePage.removeButtons.isEmpty());
 
         headerSectionPage.clickOnMenuButton();
         sidebarMenuPage.clickOnResetAppStateButton();
         driver.navigate().refresh();
 
         Assert.assertFalse(isElementDisplayed(headerSectionPage.cartValue));
-        Assert.assertTrue(itemPage.addToCartButton.isDisplayed());
+        Assert.assertTrue(homePage.removeButtons.isEmpty());
     }
 
     @Test
     public void userCanContinueShopping() {
-        addItem("Sauce Labs Backpack");
+        addRandomItem(homePage.allItemsNames());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
 
         headerSectionPage.clickOnCart();
         yourCartPage.clickOnContinueShoppingButton();
+        addRandomItem(homePage.allItemsNames());
 
-        homePage.clickOnAddToCartButton("Sauce Labs Bolt T-Shirt");
-
+        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 2);
         Assert.assertEquals(driver.getCurrentUrl(), homePage.homePageUrl());
-        Assert.assertTrue(homePage.inventoryContainer.isDisplayed());
     }
 
     @AfterMethod

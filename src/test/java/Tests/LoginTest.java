@@ -80,7 +80,6 @@ public class LoginTest extends BaseTest {
             loginPage.clickOnLoginButton();
 
             Assert.assertTrue(loginPage.error.isDisplayed());
-            Assert.assertTrue(loginPage.error.isDisplayed());
             Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());
         }
     }
@@ -95,8 +94,37 @@ public class LoginTest extends BaseTest {
             loginPage.clickOnLoginButton();
 
             Assert.assertTrue(loginPage.error.isDisplayed());
-            Assert.assertTrue(loginPage.error.isDisplayed());
             Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());
         }
+    }
+
+    @Test
+    public void verifyThatUserCannotLogInWithEmptyUsername() {
+            loginPage.inputUsername("");
+            String validPassword = excelReader.getStringData("Login", 1, 1);
+            loginPage.inputPassword(validPassword);
+            loginPage.clickOnLoginButton();
+
+            Assert.assertTrue(loginPage.error.isDisplayed());
+            Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());
+    }
+    @Test
+    public void verifyThatUserCannotLogInWithEmptyPassword() {
+        String validUsername = excelReader.getStringData("Login", 1, 0);
+        loginPage.inputUsername(validUsername);
+        loginPage.inputPassword("");
+        loginPage.clickOnLoginButton();
+
+        Assert.assertTrue(loginPage.error.isDisplayed());
+        Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());
+    }
+    @Test
+    public void verifyThatUserCannotLogInWithEmptyUsernameAndPassword() {
+        loginPage.inputUsername("");
+        loginPage.inputPassword("");
+        loginPage.clickOnLoginButton();
+
+        Assert.assertTrue(loginPage.error.isDisplayed());
+        Assert.assertEquals(driver.getCurrentUrl(), loginPage.loginPageUrl());
     }
 }

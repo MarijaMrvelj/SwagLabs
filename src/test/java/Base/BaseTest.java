@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BaseTest {
 
@@ -92,7 +93,7 @@ public class BaseTest {
         if(!isElementDisplayed(headerSectionPage.cartValue) && yourCartPage.cartItem.isEmpty())
             System.out.println("Your cart is empty.");
         else
-            System.out.println("Your cart is not empty!");
+            System.out.println("Number of items in your cart:" + headerSectionPage.numberOfItemsInCart());
         driver.navigate().back();
     }
 
@@ -112,6 +113,14 @@ public class BaseTest {
         isCartEmpty();
         homePage.clickOnAddToCartButton(itemName);
         Assert.assertTrue(driver.findElement(By.id(getRemoveButtonIdName(itemName))).isDisplayed());
+    }
+    public void addRandomItem(List<String> items) {
+        isCartEmpty();
+        Random random = new Random();
+        int randomIndex = random.nextInt(items.size());
+        String randomItem = items.get(randomIndex);
+        homePage.clickOnAddToCartButton(randomItem);
+        Assert.assertTrue(driver.findElement(By.id(getRemoveButtonIdName(randomItem))).isDisplayed());
     }
 
     public ArrayList<Double> allPricesList(List<WebElement> prices) {

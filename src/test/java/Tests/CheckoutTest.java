@@ -40,7 +40,7 @@ public class CheckoutTest extends BaseTest {
     }
     @Test
     public void userCanCancelOnCheckoutOverview() {
-        addItem("Test.allTheThings() T-Shirt (Red)");
+        addRandomItem(homePage.allItemsNames());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
 
         headerSectionPage.clickOnCart();
@@ -63,8 +63,8 @@ public class CheckoutTest extends BaseTest {
     }
     @Test
     public void userCanCheckout() {
-        addItem("Test.allTheThings() T-Shirt (Red)");
-        addItem("Sauce Labs Backpack");
+        addRandomItem(homePage.allItemsNames());
+        addRandomItem(homePage.allItemsNames());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 2);
 
         headerSectionPage.clickOnCart();
@@ -94,12 +94,13 @@ public class CheckoutTest extends BaseTest {
     }
     @Test
     public void cartIsEmptyAfterCheckoutAndUserCanStartShopping() {
-        addItem("Test.allTheThings() T-Shirt (Red)");
-        addItem("Sauce Labs Backpack");
-        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 2);
+        addRandomItem(homePage.allItemsNames());
+        addRandomItem(homePage.allItemsNames());
+        addRandomItem(homePage.allItemsNames());
+        Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 3);
 
         headerSectionPage.clickOnCart();
-        Assert.assertEquals(yourCartPage.cartItem.size(), 2);
+        Assert.assertEquals(yourCartPage.cartItem.size(), 3);
         Assert.assertEquals(driver.getCurrentUrl(), yourCartPage.yourCartPageUrl());
 
         yourCartPage.clickOnCheckoutButton();
@@ -128,7 +129,7 @@ public class CheckoutTest extends BaseTest {
 
     @Test
     public void userCannotCheckoutWithEmptyInfo() {
-        addItem("Test.allTheThings() T-Shirt (Red)");
+        addRandomItem(homePage.allItemsNames());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
 
         headerSectionPage.clickOnCart();
@@ -145,7 +146,7 @@ public class CheckoutTest extends BaseTest {
     }
     @Test
     public void userCannotCheckoutWithEmptyFirstName() {
-        addItem("Test.allTheThings() T-Shirt (Red)");
+        addRandomItem(homePage.allItemsNames());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
 
         headerSectionPage.clickOnCart();
@@ -165,7 +166,7 @@ public class CheckoutTest extends BaseTest {
     }
     @Test
     public void userCannotCheckoutWithEmptyLastName() {
-        addItem("Test.allTheThings() T-Shirt (Red)");
+        addRandomItem(homePage.allItemsNames());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
 
         headerSectionPage.clickOnCart();
@@ -185,7 +186,7 @@ public class CheckoutTest extends BaseTest {
     }
     @Test
     public void userCannotCheckoutWithEmptyPostalCode() {
-        addItem("Test.allTheThings() T-Shirt (Red)");
+        addRandomItem(homePage.allItemsNames());
         Assert.assertEquals(headerSectionPage.numberOfItemsInCart(), 1);
 
         headerSectionPage.clickOnCart();
