@@ -53,6 +53,7 @@ public class BaseTest {
         checkoutCompletePage = new CheckoutCompletePage();
     }
 
+    //Methods:
     public void logInForStandardUser() {
         String validUsername = excelReader.getStringData("Login", 1, 0);
         String validPassword = excelReader.getStringData("Login", 1, 1);

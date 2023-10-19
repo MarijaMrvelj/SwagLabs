@@ -37,9 +37,8 @@ public class HomePageTest extends BaseTest {
     }
     @Test
     public void appStateCanBeReset() {
-        isCartEmpty();
-        homePage.clickOnAddToCartButton("Sauce Labs Onesie");
-        homePage.clickOnAddToCartButton("Sauce Labs Fleece Jacket");
+        addRandomItem(homePage.allItemsNames());
+        addRandomItem(homePage.allItemsNames());
         headerSectionPage.clickOnMenuButton();
         sidebarMenuPage.clickOnResetAppStateButton();
         driver.navigate().refresh();
@@ -49,40 +48,40 @@ public class HomePageTest extends BaseTest {
     }
     @Test
     public void pricesCanBeSortedLowToHigh() {
-        System.out.println(allPricesList(homePage.prices));
+        //System.out.println(allPricesList(homePage.prices));
         Select sortItems = new Select(homePage.sortDropdown);
         sortItems.selectByVisibleText("Price (low to high)");
-        System.out.println(allPricesList(homePage.prices));
+        //System.out.println(allPricesList(homePage.prices));
 
         Assert.assertTrue(homePage.isSortedLowToHigh(allPricesList(homePage.prices)));
     }
     @Test
     public void pricesCanBeSortedHighToLow() {
-        System.out.println(allPricesList(homePage.prices));
+        //System.out.println(allPricesList(homePage.prices));
         Select sortItems = new Select(homePage.sortDropdown);
         sortItems.selectByVisibleText("Price (high to low)");
-        System.out.println(allPricesList(homePage.prices));
+        //System.out.println(allPricesList(homePage.prices));
 
         Assert.assertTrue(homePage.isSortedHighToLow(allPricesList(homePage.prices)));
     }
     @Test
     public void itemsCanBeSortedByNameZToA() {
-        System.out.println(homePage.allItemsNames());
+        //System.out.println(homePage.allItemsNames());
         Select sortItems = new Select(homePage.sortDropdown);
         sortItems.selectByVisibleText("Name (Z to A)");
-        System.out.println(homePage.allItemsNames());
+        //System.out.println(homePage.allItemsNames());
 
         Assert.assertEquals(homePage.allItemsNames(), homePage.sortItemsNamesInReverseOrder());
     }
     @Test
     public void itemsCanBeSortedByNameAToZ() {
-        System.out.println(homePage.allItemsNames());
+        //System.out.println(homePage.allItemsNames());
         Select sortItems = new Select(homePage.sortDropdown);
         sortItems.selectByVisibleText("Name (Z to A)");
-        System.out.println(homePage.allItemsNames());
+        //System.out.println(homePage.allItemsNames());
 
         sortItems.selectByVisibleText("Name (A to Z)");
-        System.out.println(homePage.allItemsNames());
+        //System.out.println(homePage.allItemsNames());
 
         Assert.assertEquals(homePage.allItemsNames(), homePage.sortItemsNamesInOrder());
     }
